@@ -26,7 +26,7 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     /// Configure a PostgreSQL database
     services.register { c -> PostgreSQLDatabase in
         
-        return try PostgreSQLDatabase(config: c.make())
+        return try PostgreSQLDatabase(config: makeDatabaseConfig())
         
     }
 
@@ -48,4 +48,21 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
         return migrations
     }
     
+}
+
+func makeDatabaseConfig() -> PostgreSQLDatabaseConfig {
+    if let url = Environment.get("DATABASE_URL") {
+        return PostgreSQLDatabaseConfig(url: url)!
+    }
+    
+    let hostname = Environment.get("DATABASE_HOSTNAME") ?? "localhost"
+    let username = Environment.get("DATABASE_USER") ?? "vapor"
+    let databaseName = Environment.get("DATABASE_DB") ?? "vapor"
+    let password = Environment.get("DATABASE_PASSWORD") ?? "password"
+    return PostgreSQLDatabaseConfig(
+        hostname: hostname,
+        username: username,
+        database: databaseName,
+        password: password
+    )
 }
