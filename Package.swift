@@ -13,7 +13,6 @@ let package = Package(
     targets: [
         .target(name: "App", dependencies: [
             "Vapor",
-            
             "FluentPostgreSQL", 
         ]),
         .target(name: "Run", dependencies: ["App"]),

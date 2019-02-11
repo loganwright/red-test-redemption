@@ -4,9 +4,7 @@ import Vapor
 public func routes(_ router: Router) throws {
     // Basic "It works" example
     router.get { req in
-        
         return "it works!"
-        
     }
     
     // Basic "Hello, world!" example
@@ -14,8 +12,11 @@ public func routes(_ router: Router) throws {
         return "hello, world!"
     }
 
-    
-
+    router.get("view") { req in 
+        return try req.view().render("hello", [
+            "name": req.parameters.next(String.self)
+        ])
+    }
     
     // Example of configuring a controller
     let todoController = TodoController()
